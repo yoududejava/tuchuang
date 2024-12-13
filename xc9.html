@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恋爱相册</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f5f1;
+        }
+
+        .album {
+            perspective: 1500px;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book {
+            width: 80vw;  
+            height: 70vh; 
+            position: relative;
+            transform-style: preserve-3d;
+            background: linear-gradient(to right, #d4afcd, #f7f0f5);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spine {
+            position: absolute;
+            top: 0;
+            left: -5%;
+            width: 5%;
+            height: 100%;
+            background: #c0a9b0;
+            border-radius: 10px 0 0 10px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .coil {
+            position: absolute;
+            top: 10%;
+            left: -2.5%;
+            width: 10%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .coil div {
+            width: 10px;
+            height: 20px;
+            background: #606060;
+            border-radius: 5px;
+        }
+
+        .page {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: transform 1s ease-in-out;
+        }
+
+        .page img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .cover {
+            background: linear-gradient(to bottom, #fbc2eb, #a6c1ee);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .cover h1 {
+            font-size: 3em;
+            margin: 0;
+            font-family: 'Georgia', serif;
+        }
+
+        .cover h2 {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .cover .heart {
+            font-size: 4em;
+            margin-top: 20px;
+            animation: pulse 1.5s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        audio {
+            display: none;
+        }
+
+        /* Fullscreen image styling */
+        .fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .fullscreen img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        @media screen and (min-width: 769px) {
+            .book {
+                width: 60vw;
+                height: 60vw;
+                max-height: 80vh;
+            }
+
+            .page:last-child h2 {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                margin: 0;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .book {
+                width: 90vw;
+                height: 60vh;
+            }
+
+            /* 使最后一页文字在手机端居中 */
+            .page:last-child {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                text-align: center;
+            }
+
+            .page:last-child h2 {
+                font-size: 2em; /* 可根据需要调整文字大小 */
+                margin: 0;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .book {
+                width: 95vw;
+                height: 55vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="album">
+        <div class="book" id="book">
+            <div class="spine"></div>
+            <div class="coil">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="page cover">
+                <h1>我们的恋爱相册</h1>
+                <h2>记录与伍宝每一个珍贵瞬间</h2>
+                <div class="heart" id="heart">❤️</div>
+            </div>
+            <div class="page"><img src="https://jsd.onmicrosoft.cn/gh/yoududejava/tuchuang@main/img/mmexport1723926674183.jpg" alt="照片1"></div>
+            <div class="page"><img src="https://jsd.onmicrosoft.cn/gh/yoududejava/tuchuang@main/img/mmexport1722781958992.jpg" alt="照片2"></div>
+            <div class="page"><img src="https://jsd.onmicrosoft.cn/gh/yoududejava/tuchuang@main/img/MEITU_20241116_222143562.jpg" alt="照片3"></div>
+             
+              <div class="page"><img src="https://jsd.onmicrosoft.cn/gh/yoududejava/tuchuang@main/img/MEITU_20240818_044134868.jpg" alt="照片3"></div>
+              <div class="page"><img src="https://jsd.onmicrosoft.cn/gh/yoududejava/tuchuang@main/img/IMG_20240901_180535.jpg" alt="照片3"></div>
+              <div class="page"><img src="https://jsd.onmicrosoft.cn/gh/yoududejava/tuchuang@main/img/MEITU_20240901_195045032.jpg" alt="照片3"></div>
+              <div class="page"><img src="https://jsd.onmicrosoft.cn/gh/yoududejava/tuchuang@main/img/MEITU_20240901_191449455.jpg" alt="照片3"></div>
+             
+              <div class="page"><img src="https://jsd.onmicrosoft.cn/gh/yoududejava/tuchuang@main/img/IMG_20240811_112720.jpg" alt="照片3"></div>
+			  
+               <div class="page"><img src="https://jsd.onmicrosoft.cn/gh/yoududejava/tuchuang@main/img/mmexport1734086988716.jpg" alt="照片3"></div>
+			     <div class="page"><img src="https://jsd.onmicrosoft.cn/gh/yoududejava/tuchuang@main/img/mmexport1734087841861.jpg" alt="照片3"></div>
+				   <div class="page"><img src="https://jsd.onmicrosoft.cn/gh/yoududejava/tuchuang@main/img/MEITU_20241213_190252619.jpg" alt="照片3"></div>
+            
+            <div class="page" style="background-color: #f7d7e8;">
+                <h2>永远爱你 ❤️</h2>
+            </div>
+        </div>
+    </div>
+
+    <audio id="background-music" loop>
+        <source src="https://m701.music.126.net/20241213165943/82e650450d92d4c38ef206d492b549f6/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/7451879758/6ea0/ecb3/a9b5/9aecb95f0d6e6c1fc805154ef9d7582a.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放。
+    </audio>
+
+    <script>
+        let currentPage = 0;
+        const pages = document.querySelectorAll('.page');
+        let startX = 0;
+        let endX = 0;
+        let isPlaying = false;
+        const music = document.getElementById('background-music');
+        const heart = document.getElementById('heart');
+
+        pages.forEach((page, index) => {
+            page.style.zIndex = pages.length - index;
+        });
+
+        document.querySelector('.book').addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        });
+
+        document.querySelector('.book').addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            handleSwipe();
+        });
+
+        document.querySelector('.book').addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+        });
+
+        document.querySelector('.book').addEventListener('mouseup', (e) => {
+            endX = e.clientX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (startX - endX > 50) {
+                nextPage();
+            } else if (endX - startX > 50) {
+                prevPage();
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < pages.length - 1) {
+                const page = pages[currentPage];
+                page.style.transform = `rotateY(-180deg)`;
+                page.style.zIndex = currentPage;
+                currentPage++;
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                const page = pages[currentPage];
+                page.style.transform = `rotateY(0deg)`;
+                page.style.zIndex = pages.length - currentPage;
+            }
+        }
+
+        // 音乐开关功能
+        heart.addEventListener('click', () => {
+            if (isPlaying) {
+                music.pause();
+                isPlaying = false;
+            } else {
+                try {
+                    music.play().then(() => {
+                        isPlaying = true;
+                    }).catch(error => {
+                        console.error('音乐播放失败:', error);
+                        alert('音乐播放失败，请检查网络连接或音频文件是否有效。');
+                    });
+                } catch (error) {
+                    console.error('播放发生错误:', error);
+                }
+            }
+        });
+
+        // 双击放大功能
+        document.querySelectorAll('.page img').forEach(img => {
+            img.addEventListener('dblclick', () => {
+                const fullscreenDiv = document.createElement('div');
+                fullscreenDiv.classList.add('fullscreen');
+                
+                const fullscreenImg = document.createElement('img');
+                fullscreenImg.src = img.src;
+                
+                fullscreenDiv.appendChild(fullscreenImg);
+                document.body.appendChild(fullscreenDiv);
+
+                fullscreenDiv.addEventListener('click', () => {
+                    document.body.removeChild(fullscreenDiv);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
